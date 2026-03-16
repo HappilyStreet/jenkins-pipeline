@@ -8,8 +8,8 @@ pipeline {
         stage('Build Stage'){
             steps{
                 script{
-                    def helloScript = load 'vars/hello.groovy'
-                    helloScript.sayHello()
+                    def buildScript = load 'vars/build.groovy'
+                    buildScript.buildStage()
                 }
             }
         }
