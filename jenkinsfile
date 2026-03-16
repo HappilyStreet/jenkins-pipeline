@@ -5,11 +5,6 @@ pipeline {
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
         stage('Build Stage'){
             steps{
                 script{
