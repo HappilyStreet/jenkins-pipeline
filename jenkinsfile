@@ -13,13 +13,14 @@ pipeline {
                 }
             }
         }
-        // stage('Push docker image') {
-        //     steps {
-        //         script{
-        //             load ('vars/push.groovy')(env.serviceDir, env.imageTag)
-        //         }
-        //     }
-        // }
+        stage('Push docker image') {
+            steps {
+                script{
+                    def pushScript = load 'vars/push.groovy'
+                    pushScript.pushStage()
+                }
+            }
+        }
         // stage('Deploy docker via helm') {
         //     steps {
         //         script{
