@@ -4,7 +4,7 @@ def buildStage() {
 
         echo "Clonee repo"
         dir(serviceDir) {
-            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git'
+            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git .'
         }
 
         echo "Installin dependensies"
@@ -13,7 +13,7 @@ def buildStage() {
             sh 'git checkout main'
             sh 'git pull origin main'
         }
-        withCredentials[usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]{
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
             echo "Pull docket image"
             
             dir(serviceDir) {
