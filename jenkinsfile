@@ -8,7 +8,8 @@ pipeline {
         stage('Build Stage'){
             steps{
                 script{
-                    load ('vars/build.groovy')(env.serviceDir, env.imageTag)
+                    def buildScript = load('vars/build.groovy')
+                    buildScript.call(env.serviceDir, env.imageTag)
                 }
             }
         }
