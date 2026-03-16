@@ -14,7 +14,7 @@ pipeline {
                 load 'vars.push-groovy'
             }
         }
-        stage('Push docker image') {
+        stage('Deploy docker via helm') {
             steps {
                 load 'vars.deploy-groovy'
             }
