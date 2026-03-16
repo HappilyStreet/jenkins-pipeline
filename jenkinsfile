@@ -1,9 +1,22 @@
+def serviceDir = '../my-todo-service' // путь до репы микросевиса
+def imageTag = env.BUILD_NUMBER // номеруем сборку
+
 pipeline {
     agent any
     stages {
-        stage('Hello') {
+        stage('Build Stage'){
+            steps{
+                load 'vars.build-groovy'
+            }
+        }
+        stage('Push docker image') {
             steps {
-                echo "Hello World"
+                load 'vars.push-groovy'
+            }
+        }
+        stage('Push docker image') {
+            steps {
+                load 'vars.deploy-groovy'
             }
         }
     }
