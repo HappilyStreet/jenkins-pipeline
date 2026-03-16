@@ -12,19 +12,19 @@ pipeline {
                 }
             }
         }
-        stage('Push docker image') {
-            steps {
-                script{
-                    load ('vars/push.groovy')(env.serviceDir, env.imageTag)
-                }
-            }
-        }
-        stage('Deploy docker via helm') {
-            steps {
-                script{
-                    load('vars/deploy.groovy')(env.serviceDir, env.imageTag) 
-                }
-            }
-        }
+        // stage('Push docker image') {
+        //     steps {
+        //         script{
+        //             load ('vars/push.groovy')(env.serviceDir, env.imageTag)
+        //         }
+        //     }
+        // }
+        // stage('Deploy docker via helm') {
+        //     steps {
+        //         script{
+        //             load('vars/deploy.groovy')(env.serviceDir, env.imageTag) 
+        //         }
+        //     }
+        // }
     }
 }
