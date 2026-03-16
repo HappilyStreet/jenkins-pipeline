@@ -1,22 +1,29 @@
-def serviceDir = '../my-todo-service' // путь до репы микросевиса
-def imageTag = env.BUILD_NUMBER // номеруем сборку
-
 pipeline {
     agent any
+    environment {
+        serviceDir = '../MyToDoService'  // путь к клонированному репозиторию с микросервисом
+        imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
+    }
     stages {
         stage('Build Stage'){
             steps{
-                load 'vars/build.groovy'
+                script{
+                    load ('vars/build.groovy')(env.serviceDir, env.imageTag)
+                }
             }
         }
         stage('Push docker image') {
             steps {
-                load 'vars/push.groovy'
+                script{
+                    load ('vars/push.groovy')(env.serviceDir, env.imageTag)
+                }
             }
         }
         stage('Deploy docker via helm') {
             steps {
-                load 'vars/deploy.groovy'
+                script{
+                    load('vars/deploy.groovy')(env.serviceDir, env.imageTag) 
+                }
             }
         }
     }

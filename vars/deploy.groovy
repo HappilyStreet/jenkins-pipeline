@@ -1,4 +1,4 @@
-def call(){
+def call(serviceDir, imageTag){
     stage('Deploy via helm'){
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             

@@ -1,4 +1,4 @@
-def call() {
+def call(serviceDir, imageTag) {
     stage('Push stage') {
         dir(serviceDir) {
             echo "Pushing Docker image to registry..."

@@ -1,4 +1,4 @@
-def call() {
+def call(serviceDir, imageTag) {
     stage('Build Stage'){
         echo "🔹 Starting Build Stage"
 
