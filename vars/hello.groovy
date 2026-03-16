@@ -1,4 +1,6 @@
 def sayHello() {
-    echo "Перед медвед"
+    stage('Build Stage'){
+        echo "Перед медвед"
+    }
 }
 return this
