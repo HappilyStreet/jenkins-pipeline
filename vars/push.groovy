@@ -4,8 +4,8 @@ def pushStage() {
             withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
                 dir(serviceDir) {
                     echo "Pushing Docker image to registry..."
-                    sh "docker tag mytodo-service:${imageTag} myregistry/mytodo-service:${imageTag}"
-                    sh "docker push myregistry/mytodo-service:${imageTag}"
+                    sh "docker tag mytodo-service:${imageTag} mrsunchip/mytodo-service:${imageTag}"
+                    sh "docker push mrsunchip/mytodo-service:${imageTag}"
                 }
             }
          }
