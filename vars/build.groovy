@@ -3,18 +3,18 @@ def call(serviceDir, imageTag) {
         echo "🔹 Starting Build Stage"
 
         echo "Clonee repo"
-        dir('..') {
+        dir(serviceDir) {
             sh 'git clone https://github.com/HappilyStreet/MyToDoService.git'
         }
 
-        echo"Install dependensies"
+        echo "Installin dependensies"
         dir(serviceDir) {
             sh 'git fetch --all'
             sh 'git checkout main'
             sh 'git pull origin main'
         }
-        withCredentials[file(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]{
-            echo"Pull docket image"
+        withCredentials[usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]{
+            echo "Pull docket image"
             
             dir(serviceDir) {
                 echo "Logging in to Docker Registry..."
