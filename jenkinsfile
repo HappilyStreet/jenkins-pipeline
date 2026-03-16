@@ -6,17 +6,17 @@ pipeline {
     stages {
         stage('Build Stage'){
             steps{
-                load 'vars.build.groovy'
+                load 'vars/build.groovy'
             }
         }
         stage('Push docker image') {
             steps {
-                load 'vars.push.groovy'
+                load 'vars/push.groovy'
             }
         }
         stage('Deploy docker via helm') {
             steps {
-                load 'vars.deploy.groovy'
+                load 'vars/deploy.groovy'
             }
         }
     }
