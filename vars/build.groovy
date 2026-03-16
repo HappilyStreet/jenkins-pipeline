@@ -1,4 +1,4 @@
-def call(String serviceDir, String imageTag) {
+return { String serviceDir, String imageTag -> {
     stage('Build Stage'){
         echo "🔹 Starting Build Stage"
 
