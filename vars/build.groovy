@@ -20,7 +20,6 @@ def call(serviceDir, imageTag) {
                 echo "Logging in to Docker Registry..."
                 sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
 
-                def imageTag = env.BUILD_NUMBER
                 echo "Building Docker image with tag: mytodo-service:${imageTag}"
                 sh "docker build -t mytodo-service:${imageTag} ."
             }
