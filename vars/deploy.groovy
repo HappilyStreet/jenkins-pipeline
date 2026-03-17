@@ -9,7 +9,7 @@ def deployStage(){
                 sh "pwd"
                 sh "ls -l .app/helm"
                 echo "Deploying to Kubernetes using Helm..."
-                sh "helm upgrade --install mytodo .app/helm --set image.tag=${imageTag}"
+                sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
                 }
             }
         }
