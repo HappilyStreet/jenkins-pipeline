@@ -4,7 +4,7 @@ def buildStage() {
 
         echo "Clone repo"
         dir(serviceDir) {
-            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git .'
+            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git'
         }
 
         echo "Installing dependensies"
