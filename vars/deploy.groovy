@@ -1,4 +1,4 @@
-def deployStage(serviceDir, imageTag){
+def deployStage(){
     stage('Deploy via helm'){
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
