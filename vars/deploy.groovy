@@ -7,6 +7,7 @@ def deployStage(){
 
             dir('app'){
                 sh "pwd"
+                sh "ls -l ./helm"
                 echo "Deploying to Kubernetes using Helm..."
                 sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
                 }
