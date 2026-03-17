@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        serviceDir = '../MyToDoService'  // путь к клонированному репозиторию с микросервисом
+        serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
     stages {
