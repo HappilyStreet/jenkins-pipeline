@@ -6,7 +6,7 @@ def deployStage(){
             sh "kubectl get nodes --kubeconfig ${env.KUBECONFIG}"
 
             dir('app'){
-                ech "pwd"
+                echo "pwd"
                 echo "Deploying to Kubernetes using Helm..."
                 sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
                 }
