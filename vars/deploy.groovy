@@ -5,9 +5,9 @@ def deployStage(){
             echo "KUBECONFIG path is: ${env.KUBECONFIG}"
             sh "kubectl get nodes --kubeconfig ${env.KUBECONFIG}"
 
-            dir(serviceDir){
+            dir('app'){
                 echo "Deploying to Kubernetes using Helm..."
-                sh "helm upgrade --install mytodo ${env.WORKSPACE}/app/helm --set image.tag=${imageTag}"
+                sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
                 }
             }
         }
