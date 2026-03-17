@@ -13,3 +13,4 @@ def deployStage(serviceDir, imageTag){
         echo "✅ Deploy Stage completed."
     }
 }
+return this
