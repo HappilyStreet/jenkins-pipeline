@@ -3,12 +3,12 @@ def buildStage() {
         echo "🔹 Starting Build Stage"
 
         echo "Clone repo"
-        dir(${env.WORKSPACE}) {
-            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git .'
+        dir(serviceDir) {
+            sh 'git clone https://github.com/HappilyStreet/MyToDoService.git'
         }
 
         echo "Installing dependensies"
-        dir(${env.WORKSPACE}) {
+        dir(serviceDir) {
             sh 'git fetch --all'
             sh 'git checkout main'
             sh 'git pull origin main'
@@ -17,7 +17,7 @@ def buildStage() {
             withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
                 echo "Pull docket image"
                 
-                dir(${env.WORKSPACE}) {
+                dir(serviceDir) {
                     echo "Logging in to Docker Registry..."
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
 

@@ -5,7 +5,7 @@ def deployStage(){
             echo "KUBECONFIG path is: ${env.KUBECONFIG}"
             sh "kubectl get nodes --kubeconfig ${env.KUBECONFIG}"
 
-            dir(${env.WORKSPACE}){
+            dir(serviceDir){
                 sh "pwd"
                 sh "ls -l ./helm"
                 echo "Deploying to Kubernetes using Helm..."
