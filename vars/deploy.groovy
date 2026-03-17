@@ -1,11 +1,12 @@
 def deployStage(){
+    def serviceDir = "${env.WORKSPACE}/app"
     stage('Deploy via helm'){
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
             echo "KUBECONFIG path is: ${env.KUBECONFIG}"
             sh "kubectl get nodes --kubeconfig ${env.KUBECONFIG}"
 
-            dir('app'){
+            dir(serviceDir){
                 sh "pwd"
                 sh "ls -l ./helm"
                 echo "Deploying to Kubernetes using Helm..."
