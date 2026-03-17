@@ -7,7 +7,7 @@ def deployStage(){
 
             dir(serviceDir){
                 echo "Deploying to Kubernetes using Helm..."
-                sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
+                sh "helm upgrade --install mytodo ${env.WORKSPACE}/app/helm --set image.tag=${imageTag}"
                 }
             }
         }
