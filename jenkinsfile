@@ -21,12 +21,13 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy docker via helm') {
-        //     steps {
-        //         script{
-        //             load('vars/deploy.groovy')(env.serviceDir, env.imageTag) 
-        //         }
-        //     }
-        // }
+        stage('Deploy docker via helm') {
+            steps {
+                script{
+                    def deployScript = load 'vars/deploy.groovy'
+                    deployScript.deployStage()
+                }
+            }
+        }
     }
 }
