@@ -1,20 +1,11 @@
 def testStage() {
     stage('Run some tests into kuber') {
         withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
-            def checkJQ = sh (
-                script: "which jq",
-                returnStdout: true
-            ).trim()
-            if(!checkJQ.contains("jq")){
-                script: "apt update && apt install -y jq"
+            dir(${serviceDir}/helm) {
+                def values = readYaml file: 'values.yaml'
+                def servicePort = values.servicePort
+                println "servicePort = ${servicePort}"
             }
-            else {
-                echo "✅ jq установлен можно выполнять проверки"
-            }
-            def servicePort = sh (
-                script: "helm get values mytodo -n default -o json | jq -r '.service.port'",
-                returnStdout: true
-            ).trim()
             echo "Порт: ${servicePort} используется прикладом"
             withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                 echo "RUN TEST"
@@ -26,8 +17,8 @@ def testStage() {
                     error("service down")
                 }
             }
-        }
         echo "✅ Тесты выполнены"
+        }
     }
 }
 return this
