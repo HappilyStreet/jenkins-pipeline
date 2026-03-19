@@ -4,44 +4,45 @@ pipeline {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
-    stage('Build Stage'){
-        steps{
-            script{
-                def buildScript = load 'vars/build.groovy'
-                buildScript.buildStage()
+    stages {
+        stage('Build Stage'){
+            steps{
+                script{
+                    def buildScript = load 'vars/build.groovy'
+                    buildScript.buildStage()
+                }
+            }
+        }
+        stage('Push docker image') {
+            steps {
+                script{
+                    def pushScript = load 'vars/push.groovy'
+                    pushScript.pushStage()
+                }
+            }
+        }
+        stage('Deploy docker via helm') {
+            steps {
+                script{
+                    def deployScript = load 'vars/deploy.groovy'
+                    deployScript.deployStage()
+                }
+            }
+        }
+        stage('Post-Deploy Tests') {
+            steps {
+                script {
+                    def postTest = load 'var/check.groovy'
+                    postTest.testStage()
+                }
+            }
+        }
+        stage('Clean old files') {
+            steps {
+                script {
+                    cleanWs ()
+                }
             }
         }
     }
-    stage('Push docker image') {
-        steps {
-            script{
-                def pushScript = load 'vars/push.groovy'
-                pushScript.pushStage()
-            }
-        }
-    }
-    stage('Deploy docker via helm') {
-        steps {
-            script{
-                def deployScript = load 'vars/deploy.groovy'
-                deployScript.deployStage()
-            }
-        }
-    }
-    stage('Post-Deploy Tests') {
-        steps {
-            script {
-                def postTest = load 'var/check.groovy'
-                postTest.testStage()
-            }
-        }
-    }
-    stage('Clean old files') {
-        steps {
-            script {
-                cleanWs ()
-            }
-        }
-    }
-
 }
