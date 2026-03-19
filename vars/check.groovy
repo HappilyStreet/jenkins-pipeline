@@ -2,7 +2,7 @@ def testStage() {
     stage('Run some tests into kuber') {
         withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
             def checkJQ = sh (
-                script: "which jq"
+                script: "which jq",
                 returnStdout: true
             ).trim()
             if(!checkJQ.contains("jq")){
@@ -20,8 +20,8 @@ def testStage() {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
             echo "RUN TEST"
             def response = sh (
-            script: "curl http:82.117.87.172:${servicePort}/health",
-            returnStdout: true
+                script: "curl http:82.117.87.172:${servicePort}/health",
+                returnStdout: true
             ).trim()
             if(!response.contains("ok")) {
                 error("service down")

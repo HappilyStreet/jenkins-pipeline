@@ -4,9 +4,11 @@ def buildStage() {
         echo "Clone repo"
         dir(serviceDir) {
             if(fileExists(".git")) {
+                echo "✅ Repo exist"
                 sh "git pull https://github.com/HappilyStreet/MyToDoService.git"
             }
             else {
+                echo "🔹Repo didnt exist and will be pull"
                 sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
             }
         }
