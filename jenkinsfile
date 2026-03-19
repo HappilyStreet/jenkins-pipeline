@@ -40,7 +40,7 @@ pipeline {
         stage('Clean old files') {
             steps {
                 script {
-                    cleanWs ()
+                    deleteDir ()
                 }
             }
         }
