@@ -3,8 +3,7 @@ def buildStage() {
         echo "🔹 Starting Build Stage"
         echo "Clone repo"
         dir(serviceDir) {
-            def file = new File("requirements.txt")
-            if(file.exists()) {
+            if(fileExists(".git")) {
                 sh "git pull https://github.com/HappilyStreet/MyToDoService.git"
             }
             else {
