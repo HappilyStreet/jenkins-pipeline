@@ -8,7 +8,7 @@ def buildStage() {
                 sh "git pull https://github.com/HappilyStreet/MyToDoService.git"
             }
             else {
-                echo "🔹Repo didnt exist and will be pull"
+                echo "🔹Repo didnt exist and will be clone"
                 sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
             }
         }
