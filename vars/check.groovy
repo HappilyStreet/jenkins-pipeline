@@ -19,3 +19,4 @@ def testStage() {
         }
     }
 }
+return this
