@@ -37,9 +37,9 @@ pipeline {
         }
     }
     stage('Clean old files') {
-        stage('Clean old files') {
-            steps{
-                cleanWs()
+        steps {
+            script {
+                cleanWs ()
             }
         }
     }
