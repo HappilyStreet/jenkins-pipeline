@@ -5,6 +5,11 @@ pipeline {
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
     stages {
+        stage('Clean old files') {
+            steps{
+                cleanWs()
+            }
+        }
         stage('Build Stage'){
             steps{
                 script{
@@ -26,6 +31,14 @@ pipeline {
                 script{
                     def deployScript = load 'vars/deploy.groovy'
                     deployScript.deployStage()
+                }
+            }
+        }
+        stage('Post-Deploy Tests') {
+            steps {
+                script {
+                    def postTest = load 'var/check.groovy'
+                    postTest.testStage()
                 }
             }
         }
