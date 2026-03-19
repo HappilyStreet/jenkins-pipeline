@@ -32,7 +32,7 @@ pipeline {
         stage('Post-Deploy Tests') {
             steps {
                 script {
-                    def postTest = load 'var/check.groovy'
+                    def postTest = load 'vars/check.groovy'
                     postTest.testStage()
                 }
             }
