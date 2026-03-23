@@ -2,8 +2,11 @@ def buildStage() {
     stage("Checkout repository and install dependensies"){
         echo "🔹 Starting Build Stage"
         echo "Cloning repo"
-        docker {
-            image 'python:3.11-slim'
+        docker.image('python:3.11-slim').inside {
+            sh '''
+                pip install flake8
+                flake8 .
+            '''
         }
         dir(serviceDir) {
             if(fileExists(".git")) {
