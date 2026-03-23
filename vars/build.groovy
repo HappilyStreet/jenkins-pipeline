@@ -14,10 +14,10 @@ def buildStage() {
                     echo "🔹Repo didnt exist and will be clone"
                     sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
                 }
-                
+
                 sh '''
-                    pip install --no-cache-dir flake8
-                    flake8 .
+                    python3 -m pip install --user --no-cache-dir flake8
+                    python3 -m flake8 .
                 '''
 
                 echo "✅ Checkout complete"
