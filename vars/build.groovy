@@ -1,7 +1,7 @@
 def buildStage() {
     stage("Checkout repository and install dependensies"){
         echo "🔹 Starting Build Stage"
-        echo "Cloning repo"
+        echo "Cloning repo" 
 
         withCredentials([usernamePassword(credentialsId: "dockerhub-creds", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS")]) {
             withEnv(["PATH=/usr/local/bin:$PATH"]) {
@@ -16,21 +16,22 @@ def buildStage() {
                         sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
                     }
 
-                docker.image('python:3.11-slim').inside {
-                    sh '''
-                        pip install --no-cache-dir flake8
-                        flake8 .
-                    '''
+                    docker.image('python:3.11-slim').inside {
+                        sh '''
+                            pip install --no-cache-dir flake8
+                            flake8 .
+                        '''
+                    }
+
+                    echo "✅ Checkout complete"
+                    echo "✅ linter check complete"     
+
+                    echo "Logging in to Docker Registry..."
+                    sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
+
+                    echo "Building Docker image with tag: mytodo-service:${imageTag}"
+                    sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
                 }
-
-                echo "✅ Checkout complete"
-                echo "✅ linter check complete"     
-
-                echo "Logging in to Docker Registry..."
-                sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
-
-                echo "Building Docker image with tag: mytodo-service:${imageTag}"
-                sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
             }
         }
     }
