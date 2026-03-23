@@ -1,7 +1,7 @@
 def buildStage() {
-    stage("Build Stage"){
+    stage("Checkout repository and install dependensies"){
         echo "🔹 Starting Build Stage"
-        echo "Clone repo"
+        echo "Cloning repo"
         dir(serviceDir) {
             if(fileExists(".git")) {
                 echo "✅ Repo exist"
@@ -18,6 +18,21 @@ def buildStage() {
             sh "git checkout main"
             sh "git pull origin main"
         }
+    }
+    echo "✅ Checkout complete"
+    stage("Linter check") {
+        docker {
+            image 'python:3.11-slim'
+        }
+        steps{
+            sh '''
+                pip install --no-cache-dir flake8
+                flake8 .
+            '''
+        }
+    }
+    echo "✅ linter check complete"
+    stage("Build image") {
         withEnv(["PATH=/usr/local/bin:$PATH"]) {
             withCredentials([usernamePassword(credentialsId: "dockerhub-creds", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS")]){
                 echo "Pull docket image"
@@ -31,7 +46,8 @@ def buildStage() {
                 }
             }
         }
-        echo "✅ Build Stage completed."
     }
+    echo "✅  Image was builded"
+    echo "✅ Build Stage completed"
 }
 return this
