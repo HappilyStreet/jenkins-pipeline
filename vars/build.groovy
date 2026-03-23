@@ -15,13 +15,13 @@ def buildStage() {
                         echo "🔹Repo didnt exist and will be clone"
                         sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
                     }
-
-                    docker.image('python:3.11-slim').inside {
-                        sh '''
-                            pip install --no-cache-dir flake8
-                            flake8 .
-                        '''
-                    }
+                    
+                    sh '''
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip install --no-cache-dir flake8
+                        flake8 .
+                    '''
 
                     echo "✅ Checkout complete"
                     echo "✅ linter check complete"     
