@@ -2,6 +2,9 @@ def buildStage() {
     stage("Checkout repository and install dependensies"){
         echo "🔹 Starting Build Stage"
         echo "Cloning repo"
+        docker {
+            image 'python:3.11-slim'
+        }
         dir(serviceDir) {
             if(fileExists(".git")) {
                 echo "✅ Repo exist"
@@ -11,28 +14,23 @@ def buildStage() {
                 echo "🔹Repo didnt exist and will be clone"
                 sh "git clone https://github.com/HappilyStreet/MyToDoService.git ."
             }
-        }
-        echo "Installing dependensies"
-        dir(serviceDir) {
+
             sh "git fetch --all"
             sh "git checkout main"
             sh "git pull origin main"
+
+            
         }
-    }
-    echo "✅ Checkout complete"
-    stage("Linter check") {
-        docker {
-            image 'python:3.11-slim'
-        }
-        steps{
+        echo "✅ Checkout complete"
+
+        dir(serviceDir) {
             sh '''
                 pip install --no-cache-dir flake8
                 flake8 .
             '''
         }
-    }
-    echo "✅ linter check complete"
-    stage("Build image") {
+        echo "✅ linter check complete"
+
         withEnv(["PATH=/usr/local/bin:$PATH"]) {
             withCredentials([usernamePassword(credentialsId: "dockerhub-creds", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS")]){
                 echo "Pull docket image"
