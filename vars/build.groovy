@@ -16,8 +16,10 @@ def buildStage() {
                 }
 
                 sh '''
-                    python3 -m pip install --user --no-cache-dir flake8
-                    python3 -m flake8 .
+                    python3 -m venv .venv
+                    source .venv/bin/activate
+                    pip install --no-cache-dir flake8
+                    python -m flake8 .
                 '''
 
                 echo "✅ Checkout complete"
