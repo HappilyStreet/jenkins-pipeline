@@ -17,6 +17,9 @@ def testStage() {
                     if(!response.contains("ok")) {
                         error("service down")
                     }
+                    else {
+                        echo "${responce}"
+                    }
                 }
             }
         echo "✅ Тесты выполнены"

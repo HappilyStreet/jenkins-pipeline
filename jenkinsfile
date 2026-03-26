@@ -8,32 +8,68 @@ pipeline {
         stage('Build Stage'){
             steps{
                 script{
-                    def buildScript = load 'vars/build.groovy'
-                    buildScript.buildStage()
+                    if(params.BUILD == 'delete') {
+                        echo "skipping install stage"
+                    } else {
+                        def buildScript = load 'vars/build.groovy'
+                        buildScript.buildStage()
+                        
+                        def changeDetected = buildScript.buildStage()
+
+                        echo "Change detected? ${changeDetected}"
+                    }
                 }
             }
         }
         stage('Push docker image') {
             steps {
                 script{
-                    def pushScript = load 'vars/push.groovy'
-                    pushScript.pushStage()
+                    if(params.BUILD == 'delete') {
+                        echo "skipping Push stage"
+                    }else if(changeDetected) {
+                        def pushScript = load 'vars/push.groovy'
+                        pushScript.pushStage()
+                    } else {
+                        echo "No changes...skipping push stage"
+                    }
                 }
             }
         }
         stage('Deploy docker via helm') {
             steps {
                 script{
-                    def deployScript = load 'vars/deploy.groovy'
-                    deployScript.deployStage()
+                    if(params.BUILD == 'delete') {
+                        echo "skipping Deploy stage"
+                    }else{
+                        def deployScript = load 'vars/deploy.groovy'
+                        deployScript.deployStage()                       
+                    }
+ 
                 }
             }
         }
         stage('Post-Deploy Tests') {
             steps {
                 script {
-                    def postTest = load 'vars/check.groovy'
-                    postTest.testStage()
+                    if(params.BUILD == 'delete') {
+                        echo "skipping Test stage"
+                    }else{
+                        def postTest = load 'vars/check.groovy'
+                        postTest.testStage()
+                    }
+
+                }
+            }
+        }
+        stage('Delete Serivice') {
+            steps {
+                script {
+                    if(params.BUILD == 'delete') {
+                        def deleteScript = load 'vars/delete.groovy'
+                        deleteScript.deleteStage()
+                    } else{
+                        echo "No need to delete"
+                    }
                 }
             }
         }
