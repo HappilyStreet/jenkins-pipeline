@@ -52,5 +52,5 @@ def buildStage() {
         }
     }
     echo "✅  Image was builded"
-    return hasChanges
+    return hasChange
 }
