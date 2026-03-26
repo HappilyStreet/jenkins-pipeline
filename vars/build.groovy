@@ -44,7 +44,8 @@ def buildStage() {
                     sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
 
                 }
-            } echo "✅ Build Stage completed"
+            echo "✅ Build Stage completed"
+            }
             else {
                 echo "🚫 Skipping build — no changes"
             }
