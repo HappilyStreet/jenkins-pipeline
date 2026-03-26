@@ -41,7 +41,7 @@ pipeline {
             }
             steps {
                 script{
-                    if(changeDetected {
+                    if(changeDetected) {
                         def deployScript = load 'vars/deploy.groovy'
                         deployScript.deployStage()  
                     }       
