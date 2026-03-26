@@ -12,7 +12,7 @@ def buildStage() {
 
                     sh "git fetch origin main"
 
-                    def(diff) sh(
+                    def diff = sh(
                         script: "git diff HEAD origin/main",
                         returnStdout: true
                     ).trim()
