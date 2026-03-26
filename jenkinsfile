@@ -41,8 +41,10 @@ pipeline {
             }
             steps {
                 script{
-                    def deployScript = load 'vars/deploy.groovy'
-                    deployScript.deployStage()                       
+                    if(changeDetected {
+                        def deployScript = load 'vars/deploy.groovy'
+                        deployScript.deployStage()  
+                    }       
                 }
             }
         }
@@ -52,9 +54,10 @@ pipeline {
             }
             steps {
                 script {
-                    def postTest = load 'vars/check.groovy'
-                    postTest.testStage()
-
+                    if(changeDetected) {
+                        def postTest = load 'vars/check.groovy'
+                        postTest.testStage()
+                    }
                 }
             }
         }
