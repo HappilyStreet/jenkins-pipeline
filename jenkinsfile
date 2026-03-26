@@ -61,7 +61,7 @@ pipeline {
                 }
             }
         }
-        stage('Delete Serivice') {
+        stage('Delete Service') {
             when {
                 expression { params.BUILD == 'delete' }
             }
