@@ -6,70 +6,65 @@ pipeline {
     }
     stages {
         stage('Build Stage'){
+            when {
+                expression { params.BUILD != 'delete' }
+            }
             steps{
                 script{
-                    if(params.BUILD == 'delete') {
-                        echo "skipping install stage"
-                    } else {
-                        def buildScript = load 'vars/build.groovy'
-                        buildScript.buildStage()
-                        
-                        def changeDetected = buildScript.buildStage()
+                    def buildScript = load 'vars/build.groovy'
+                    buildScript.buildStage()
+                    
+                    def changeDetected = buildScript.buildStage()
 
-                        echo "Change detected? ${changeDetected}"
-                    }
+                    echo "Change detected? ${changeDetected}"
                 }
             }
         }
         stage('Push docker image') {
+            when {
+                expression { params.BUILD != 'delete' }
+            }
             steps {
                 script{
-                    if(params.BUILD == 'delete') {
-                        echo "skipping Push stage"
-                    }else if(changeDetected) {
+                    if(changeDetected) {
                         def pushScript = load 'vars/push.groovy'
                         pushScript.pushStage()
-                    } else {
-                        echo "No changes...skipping push stage"
                     }
+                    echo "No changes...skipping push stage"
                 }
             }
         }
         stage('Deploy docker via helm') {
+            when {
+                expression { params.BUILD != 'delete' }
+            }
             steps {
                 script{
-                    if(params.BUILD == 'delete') {
-                        echo "skipping Deploy stage"
-                    }else{
-                        def deployScript = load 'vars/deploy.groovy'
-                        deployScript.deployStage()                       
-                    }
- 
+                    def deployScript = load 'vars/deploy.groovy'
+                    deployScript.deployStage()                       
                 }
             }
         }
         stage('Post-Deploy Tests') {
+            when {
+                expression { params.BUILD != 'delete' }
+            }
             steps {
                 script {
-                    if(params.BUILD == 'delete') {
-                        echo "skipping Test stage"
-                    }else{
-                        def postTest = load 'vars/check.groovy'
-                        postTest.testStage()
-                    }
+                    def postTest = load 'vars/check.groovy'
+                    postTest.testStage()
 
                 }
             }
         }
         stage('Delete Serivice') {
+            when {
+                expression { params.BUILD = 'delete' }
+            }
             steps {
                 script {
-                    if(params.BUILD == 'delete') {
-                        def deleteScript = load 'vars/delete.groovy'
-                        deleteScript.deleteStage()
-                    } else{
-                        echo "No need to delete"
-                    }
+                    def deleteScript = load 'vars/delete.groovy'
+                    deleteScript.deleteStage()
                 }
             }
         }
