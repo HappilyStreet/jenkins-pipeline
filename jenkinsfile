@@ -12,7 +12,6 @@ pipeline {
             steps{
                 script{
                     def buildScript = load 'vars/build.groovy'
-                    buildScript.buildStage()
                     
                     def changeDetected = buildScript.buildStage()
 
