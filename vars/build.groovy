@@ -1,9 +1,9 @@
 def buildStage() {
+    def hasChange = false 
+
     stage("Checkout repository and install dependensies"){
         echo "🔹 Starting Build Stage"
         echo "Cloning repo"
-
-        def hasChange = false
         
         withEnv(["PATH=/usr/local/bin:$PATH"]) {
             dir(serviceDir) {
