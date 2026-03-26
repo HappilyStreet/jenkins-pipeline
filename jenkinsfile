@@ -63,7 +63,7 @@ pipeline {
         }
         stage('Delete Serivice') {
             when {
-                expression { params.BUILD = 'delete' }
+                expression { params.BUILD == 'delete' }
             }
             steps {
                 script {
