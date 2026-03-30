@@ -7,6 +7,14 @@ pipeline {
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
     stages {
+        stage('Check environment') {
+            steps{
+                script{
+                    def checkScript = 'vars/precheck.groovy'
+                    checkScript.checkStage()
+                }
+            }
+        }
         stage('Build Stage'){
             when {
                 expression { params.BUILD != 'delete' }
