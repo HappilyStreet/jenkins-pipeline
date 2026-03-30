@@ -46,7 +46,8 @@ def buildStage() {
                     } else {
                         echo "No changes detected, pulling last image from Docker Hub..."
                         sh "docker pull mrsunchip/mytodo-service:${imageTag}"
-                        sh "docker tag mrsunchip/mytodo-service:${imageTag} mytodo-service:${imageTag}"
+                        sh "docker tag mrsunchip/mytodo-service:${imageTag} mytodo-service:${imageTag} || echo 'Image not found on Docker Hub"
+                        sh "docker tag mrsunchip/mytodo-service:${imageTag} mytodo-service:${imageTag} || echo 'Skipping tag, image not found locally"
                     }
                 }
             echo "✅ Build Stage completed"
