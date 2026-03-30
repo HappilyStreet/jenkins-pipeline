@@ -1,4 +1,4 @@
-deleteStage() {
+def deleteStage() {
     stage('Delete service') {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             withEnv(["PATH=${env.HOME}/bin:${env.PATH}"]){
