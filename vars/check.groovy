@@ -8,7 +8,7 @@ def testStage() {
 
                 echo "Порт: ${servicePort} используется прикладом"
 
-                withCredentials([string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     echo "RUN TEST"
                     def response = sh (
                         script: "curl http://82.117.87.172:${servicePort}/health",

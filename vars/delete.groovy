@@ -1,7 +1,7 @@
 deleteDtage() {
     stage('Delete service') {
-        withCredentials([string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
-            withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]){
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
+            withEnv(["PATH=${env.HOME}/bin:${env.PATH}"]){
                 dir(serviceDir){
                     echo "Deploying to Kubernetes using Helm..."
                     sh "helm uninstall mytodo -n default"
