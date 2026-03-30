@@ -1,6 +1,6 @@
 deleteDtage() {
     stage('Delete service') {
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
+        withCredentials([string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]){
                 dir(serviceDir){
                     echo "Deploying to Kubernetes using Helm..."
