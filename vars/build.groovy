@@ -40,8 +40,13 @@ def buildStage() {
                     echo "Logging in to Docker Registry..."
                     sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
 
-                    echo "Building Docker image with tag: mytodo-service:${imageTag}"
-                    sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
+                    if(hasChange) {
+                        echo "Building Docker image with tag: mytodo-service:${imageTag}"
+                        sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
+                    } else {
+                        echo "Pulling latest Docker image from registry..."
+                        sh "docker pull mrsunchip/mytodo-service:${imageTag}"
+                    }
 
                 }
             echo "✅ Build Stage completed"
@@ -51,6 +56,5 @@ def buildStage() {
             }
         }
     }
-    return hasChange
 }
 return this 
