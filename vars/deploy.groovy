@@ -1,7 +1,7 @@
 def deployStage(){
     stage('Deploy via helm'){
-        withCredentials([string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
-            withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
+        withEnv(["PATH=${env.HOME}/bin:${env.PATH}"]) {
+            withCredentials([string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]){
             echo "KUBECONFIG path is: ${env.KUBECONFIG}"
             sh "kubectl get nodes --kubeconfig ${env.KUBECONFIG}"
 
