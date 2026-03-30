@@ -18,7 +18,7 @@ def testStage() {
                         error("service down")
                     }
                     else {
-                        echo "${responce}"
+                        echo "${response}"
                     }
                 }
             }
