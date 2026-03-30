@@ -4,7 +4,7 @@ def precheckStage() {
         dir(serviceDir) {
             def checkdocker = sh(
                 script: "docker --version",
-                 returnStout: true
+                 returnStdout: true
             ).trim()
             if(!checkdocker.contains("version")){
                 echo "Docker isnt install, installing"
