@@ -1,6 +1,6 @@
 def testStage() {
     stage('Run some tests into kuber') {
-        withEnv(["PATH=/usr/local/bin:/opt/homebrew/bin:$PATH"]) {
+        withEnv(["PATH=${env.HOME}/bin:${env.PATH}"]) {
             dir("${serviceDir}/helm") {
                 def values = readYaml file: 'values.yaml'
                 def servicePort = values.servicePort
