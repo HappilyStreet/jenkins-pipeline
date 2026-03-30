@@ -21,6 +21,15 @@ def precheckStage() {
                 sh "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"
             }
             print(checkHelm)
+
+            def checkkubectl = sh (
+                script: "",
+                returnStdout: true
+            ).trim()
+            if(!checkkubect.contains("/usr/bin/kubectl")){
+                echo "Kubectl isnt install, installing"
+                sh "curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/ && kubectl version --client"
+            }
         }
 
     }
