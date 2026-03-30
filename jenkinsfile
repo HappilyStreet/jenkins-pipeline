@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Build Stage'){
             when {
-                expression { params.BUILD != 'delete' }
+                expression { params.BUILD == 'install' }
             }
             steps{
                 script{
@@ -35,40 +35,30 @@ pipeline {
             }
             steps {
                 script{
-                    if(changeDetected) {
-                        def pushScript = load 'vars/push.groovy'
-                        pushScript.pushStage()
-                    }
-                    echo "No changes...skipping push stage"
+                    def pushScript = load 'vars/push.groovy'
+                    pushScript.pushStage()
                 }
             }
         }
         stage('Deploy docker via helm') {
             when {
-                expression { params.BUILD != 'delete' }
+                expression { params.BUILD == 'install' }
             }
             steps {
                 script{
-                    if(changeDetected) {
-                        def deployScript = load 'vars/deploy.groovy'
-                        deployScript.deployStage()  
-                    }
-                    echo "No changes...skipping Deploy stage"       
+                    def deployScript = load 'vars/deploy.groovy'
+                    deployScript.deployStage()
                 }
             }
         }
         stage('Post-Deploy Tests') {
             when {
-                expression { params.BUILD != 'delete' }
+                expression { params.BUILD == 'install' }
             }
             steps {
                 script {
-                    if(changeDetected) {
                         def postTest = load 'vars/check.groovy'
-                        postTest.testStage()
-                    }
-                    echo "No changes...skipping Tests stage"    
-                }
+                        postTest.testStage() 
             }
         }
         stage('Delete Service') {
