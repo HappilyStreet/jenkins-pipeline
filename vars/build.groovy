@@ -44,10 +44,9 @@ def buildStage() {
                         echo "Building Docker image with tag: mytodo-service:${imageTag}"
                         sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"
                     } else {
-                        echo "Pulling latest Docker image from registry..."
-                        sh "docker pull mrsunchip/mytodo-service:${imageTag}"
+                        echo "No changes detected, pulling last image from Docker Hub..."
+                        sh "docker pull mrsunchip/mytodo-service:${imageTag} || echo 'Image not found on Docker Hub'"
                     }
-
                 }
             echo "✅ Build Stage completed"
             }
