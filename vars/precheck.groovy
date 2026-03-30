@@ -1,4 +1,4 @@
-def checkStage() {
+def precheckStage() {
     stage('Check installed components for work') {
         echo "Docker check"
         dir(serviceDir) {
@@ -26,3 +26,4 @@ def checkStage() {
     }
     echo "✅ Check complete"
 }
+return this

@@ -10,8 +10,8 @@ pipeline {
         stage('Check environment') {
             steps{
                 script{
-                    def checkScript = 'vars/precheck.groovy'
-                    checkScript.checkStage()
+                    def precheckScript = 'vars/precheck.groovy'
+                    precheckScript.precheckStage()
                 }
             }
         }
