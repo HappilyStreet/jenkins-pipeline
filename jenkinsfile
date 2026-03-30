@@ -52,7 +52,8 @@ pipeline {
                     if(changeDetected) {
                         def deployScript = load 'vars/deploy.groovy'
                         deployScript.deployStage()  
-                    }       
+                    }
+                    echo "No changes...skipping Deploy stage"       
                 }
             }
         }
@@ -66,6 +67,7 @@ pipeline {
                         def postTest = load 'vars/check.groovy'
                         postTest.testStage()
                     }
+                    echo "No changes...skipping Tests stage"    
                 }
             }
         }
