@@ -26,17 +26,6 @@ def precheckStage() {
                 script: "",
                 returnStdout: true
             ).trim()
-            if(!checkkubectl.contains("/usr/bin/kubectl")){
-                echo "Kubectl isnt install, installing"
-                sh """
-                    mkdir -p \$HOME/bin
-                    curl -LO https://dl.k8s.io/release/\$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
-                    chmod +x kubectl
-                    mv kubectl \$HOME/bin/
-                    export PATH=\$HOME/bin:\$PATH
-                    kubectl version --client
-                """
-            }
         }
 
     }
