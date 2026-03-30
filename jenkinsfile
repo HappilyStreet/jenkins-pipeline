@@ -57,8 +57,9 @@ pipeline {
             }
             steps {
                 script {
-                        def postTest = load 'vars/check.groovy'
-                        postTest.testStage() 
+                    def postTest = load 'vars/check.groovy'
+                    postTest.testStage()
+                }
             }
         }
         stage('Delete Service') {
