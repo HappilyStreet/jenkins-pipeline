@@ -15,7 +15,9 @@ pipeline {
         }
         stage('Packages and Tests') {
             when {
-                expression { env.BRANCH == 'main' }
+                expression {
+                    (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
+                }
             }
             steps {
                 script{
@@ -26,7 +28,9 @@ pipeline {
         }
         stage('Build and push') {
             when {
-                expression { env.BRANCH == 'main' }
+                expression { 
+                    (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
+                }
             }
             steps {
                 script {
@@ -38,8 +42,9 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    expression { env.BRANCH == 'main' }
-                    expression {params.BUILD == 'install'}
+                    expression { 
+                        (env.BRANCH == 'main') || (params.BUILD == 'install')
+                    }
                 }
             }
             steps {
@@ -52,8 +57,9 @@ pipeline {
         stage('Run tests after deploy') {
             when {
                 anyOf {
-                    expression { env.BRANCH == 'main' }
-                    expression {params.BUILD == 'install'}
+                    expression { 
+                        (env.BRANCH == 'main' ) || (params.BUILD == 'install')
+                    }
                 }
             }
             steps {
