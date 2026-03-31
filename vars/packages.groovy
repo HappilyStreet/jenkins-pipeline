@@ -6,7 +6,7 @@ def packagesStage() {
         dir(serviceDir) {
             if(fileExists(".git")) {
                 echo "✅ Repo exists, pulling latest changes"
-                
+
                 sh "git reset --hard && git clean -fd"
                 sh "git pull origin main"
             }
@@ -19,6 +19,7 @@ def packagesStage() {
 
 
             sh '''
+                python3 -m pip install --user --upgrade pip virtualenv
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
