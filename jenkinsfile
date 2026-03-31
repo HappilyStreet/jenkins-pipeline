@@ -17,7 +17,8 @@ pipeline {
         stage('Packages and Tests') {
             when {
                 expression {
-                    (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
+                    def branch = env.BRANCH.replaceFirst('refs/heads/', '')
+                    return (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
                 }
             }
             steps {
