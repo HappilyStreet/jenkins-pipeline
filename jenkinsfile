@@ -18,6 +18,7 @@ pipeline {
             when {
                 expression {
                     print(env.BRANCH)
+                    print(params.BUILD)
                     (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
                 }
             }
