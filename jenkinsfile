@@ -56,7 +56,7 @@ pipeline {
         stage('Run tests after deploy') {
             when {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
+                        ((env.BRANCH == 'main') || (params.INSTALL)) && (!params.DELETE)
                 }
             }
             steps {
