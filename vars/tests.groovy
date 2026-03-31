@@ -5,7 +5,7 @@ def testStage() {
         sh '''
             pwd
             python3 -m venv venv
-            venv/bin/pip install -r requirements.txt
+            venv/bin/pip install -r  ${serviceDir}/requirements.txt
             venv/bin/pytest tests/test_service.py --alluredir=allure-results
         '''
 
