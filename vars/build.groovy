@@ -18,3 +18,4 @@ def buildStage() {
     }
     echo "✅  Builded and pushed to docker hub"
 }
+return this
