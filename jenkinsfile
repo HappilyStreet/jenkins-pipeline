@@ -8,7 +8,9 @@ pipeline {
         stage('Init envs') {
             steps {
                 script {
-                    env.BRANCH = env.GIT_BRANCH?.replaceFirst('refs/heads/', '') ?: env.BRANCH_NAME ?: 'main'
+                env.BRANCH = (env.GIT_BRANCH ?: params.BRANCH_NAME ?: 'main')
+                                    .replaceFirst('^refs/heads/', '')
+                                    .replaceFirst('^origin/', '')
                     echo "Detected branch: ${env.BRANCH}"
                 }
             }
