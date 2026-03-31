@@ -10,7 +10,7 @@ def deployStage(){
                     returnStdout: true
                 ).trim()
             
-                def json = readJSON text: response
+                def json = readJSON (text: response)
                 imageTag = json.results[0].name
 
                 echo "✅ Latest image tag from Docker Hub: ${imageTag}"
