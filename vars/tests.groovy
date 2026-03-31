@@ -1,8 +1,9 @@
 def testStage() {
     echo "🔹 Running tests after deploy"
 
-    dir("${serviceDir}") {
+    dir(serviceDir) {
         sh '''
+            pwd
             python3 -m venv venv
             venv/bin/pip install -r requirements.txt
             venv/bin/pytest tests/test_service.py --alluredir=allure-results
