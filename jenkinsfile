@@ -3,6 +3,7 @@ pipeline {
     environment {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
+        BRANCH = "${params.BRANCH_NAME?.replace('refs/heads/', '') ?: 'main'}"
     }
     triggers {
         githubPush()
@@ -10,7 +11,7 @@ pipeline {
     stages {
         stage('Packages and Tests') {
             when {
-                branch 'main'
+                expression { env.BRANCH == 'main' }
             }
             steps {
                 script{
@@ -21,7 +22,7 @@ pipeline {
         }
         stage('Build and push') {
             when {
-                branch 'main'
+                expression { env.BRANCH == 'main' }
             }
             steps {
                 script {
@@ -33,7 +34,7 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch 'main'
+                    expression { env.BRANCH == 'main' }
                     expression {params.BUILD == 'install'}
                 }
             }
@@ -47,7 +48,7 @@ pipeline {
         stage('Run tests after deploy') {
             when {
                 anyOf {
-                    branch 'main'
+                    expression { env.BRANCH == 'main' }
                     expression {params.BUILD == 'install'}
                 }
             }
