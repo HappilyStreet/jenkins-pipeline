@@ -44,7 +44,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL)
+                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.UNINSTALL)
                     }
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL)
+                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.UNINSTALL)
                     }
                 }
             }
