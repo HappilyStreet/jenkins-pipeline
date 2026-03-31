@@ -19,19 +19,16 @@ def packagesStage() {
 
 
             sh '''
-            # Создаём и активируем виртуальное окружение
-            python3 -m venv venv
-            source venv/bin/activate
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                if [ -f requirements.txt ]; then
+                    pip install -r requirements.txt
+                fi
 
-            # Обновляем pip и ставим зависимости
-            pip install --upgrade pip
-            pip install -r requirements.txt
-
-            # Линтинг (не фатально при ошибках)
-            pylint test/test_service.py || true
-
-            # Запуск тестов с Allure
-            pytest --alluredir=allure-results
+                # Запускаем линтер и тесты
+                venv/bin/pylint test/test_service.py || true
+                venv/bin/pytest --alluredir=allure-results
             '''
 
             allure([
