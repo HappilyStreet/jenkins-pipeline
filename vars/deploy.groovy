@@ -7,7 +7,7 @@ def deployStage(){
                     def repo = 'mrsunchip/mytodo-service'
 
                     def response = sh (
-                        script: "curl -s 'https://hub.docker.com/v2/repositories/${repo}/tags?page_size=1&page=1&ordering=last_updated'",
+                        script: "curl -s 'https://hub.docker.com/v2/repositories/${repo}/tags?page_size=1&ordering=last_updated'",
                         returnStdout: true
                     ).trim()
                 
