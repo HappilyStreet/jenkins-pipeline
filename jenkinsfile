@@ -17,7 +17,7 @@ pipeline {
         stage('Packages and Tests') {
             when {
                 expression {
-                    (env.BRANCH == 'main') && (!params.INSTALL) && (!params.UNINSTALL)
+                    (env.BRANCH == 'main') && (!params.INSTALL) && (!params.DELETE)
                 }
             }
             steps {
@@ -30,7 +30,7 @@ pipeline {
         stage('Build and push') {
             when {
                 expression { 
-                   (env.BRANCH == 'main') && (!params.INSTALL) && (!params.UNINSTALL)
+                   (env.BRANCH == 'main') && (!params.INSTALL) && (!params.DELETE)
                 }
             }
             steps {
@@ -44,7 +44,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.UNINSTALL)
+                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
                     }
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.UNINSTALL)
+                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
                     }
                 }
             }
