@@ -19,7 +19,11 @@ def packagesStage() {
 
 
             sh '''
-                python3 -m pip install --user --upgrade pip virtualenv
+                if ! command -v pip3 >/dev/null 2>&1; then
+                    echo "Installing pip..."
+                    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                    python3 get-pip.py --user
+                fi
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
