@@ -1,7 +1,7 @@
 def testStage() {
     echo "🔹 Running tests after deploy"
 
-    dir(serviceDir) {
+    dir(serviceDir/'test') {
         sh '''
             pwd
             python3 -m venv venv
