@@ -42,11 +42,9 @@ pipeline {
         }
         stage('Deploy') {
             when {
-                anyOf {
                     expression { 
                         (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
                     }
-                }
             }
             steps {
                 script {
@@ -57,10 +55,8 @@ pipeline {
         }
         stage('Run tests after deploy') {
             when {
-                anyOf {
                     expression { 
                         (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
-                    }
                 }
             }
             steps {
