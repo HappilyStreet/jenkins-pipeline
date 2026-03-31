@@ -8,7 +8,7 @@ pipeline {
         stage('Init envs') {
             steps {
                 script {
-                    env.BRANCH = params.BRANCH_NAME?.replace('refs/heads/', '') ?: env.BRANCH_NAME ?: 'main'
+                    env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
                     echo "Detected branch: ${env.BRANCH}"
                 }
             }
