@@ -3,7 +3,6 @@ pipeline {
     environment {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
-        BRANCH = "${params.BRANCH_NAME?.replace('refs/heads/', '') ?: 'main'}"
     }
     stages {
         stage('Init envs') {
