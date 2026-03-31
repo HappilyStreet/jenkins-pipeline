@@ -19,30 +19,19 @@ def packagesStage() {
 
 
             sh '''
-            # Установим pip, если нет
-            if ! command -v pip3 >/dev/null 2>&1; then
-                echo "Installing pip..."
-                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-                python3 get-pip.py --user
-            fi
-
-            # Создаём виртуальное окружение
+            # Создаём и активируем виртуальное окружение
             python3 -m venv venv
-            . venv/bin/activate
+            source venv/bin/activate
 
-            # Обновляем pip
+            # Обновляем pip и ставим зависимости
             pip install --upgrade pip
+            pip install -r requirements.txt
 
-            # Устанавливаем зависимости
-            if [ -f requirements.txt ]; then
-                pip install -r requirements.txt
-            else
-                pip install pytest pytest-cov allure-pytest pylint flask sqlalchemy requests
-            fi
+            # Линтинг (не фатально при ошибках)
+            pylint test/test_service.py || true
 
-            # Проверка кода и тесты уже в активированном venv
-            venv/bin/pylint **/*.py || true
-            venv/bin/pytest --alluredir=allure-results
+            # Запуск тестов с Allure
+            pytest --alluredir=allure-results
             '''
 
             allure([
