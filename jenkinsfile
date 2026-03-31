@@ -17,9 +17,7 @@ pipeline {
         stage('Packages and Tests') {
             when {
                 expression {
-                    print(env.BRANCH)
-                    print(params.BUILD)
-                    (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
+                    env.BRANCH == 'main'
                 }
             }
             steps {
@@ -32,7 +30,7 @@ pipeline {
         stage('Build and push') {
             when {
                 expression { 
-                    (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
+                    env.BRANCH == 'main'
                 }
             }
             steps {
@@ -46,7 +44,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main') || (params.BUILD == 'install')
+                        (env.BRANCH == 'main') || (params.INSTALL)
                     }
                 }
             }
@@ -61,7 +59,7 @@ pipeline {
             when {
                 anyOf {
                     expression { 
-                        (env.BRANCH == 'main' ) || (params.BUILD == 'install')
+                        (env.BRANCH == 'main') || (params.INSTALL)
                     }
                 }
             }
@@ -74,7 +72,7 @@ pipeline {
         }
         stage('Delete service') {
             when {
-                expression { params.BUILD == 'delete' }
+                expression { (params.DELETE) }
             }
             steps {
                 script {
