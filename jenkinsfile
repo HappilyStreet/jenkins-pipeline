@@ -43,7 +43,7 @@ pipeline {
         stage('Deploy') {
             when {
                     expression { 
-                        (env.BRANCH == 'main') || (params.INSTALL) && (!params.DELETE)
+                        ((env.BRANCH == 'main') || (params.INSTALL)) && (!params.DELETE)
                     }
             }
             steps {
