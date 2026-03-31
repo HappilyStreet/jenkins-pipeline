@@ -6,18 +6,19 @@ pipeline {
         BRANCH = "${params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main'}".replaceFirst('refs/heads/', '')
     }
     stages {
-        // stage('Init envs') {
-        //     steps {
-        //         script {
-        //             env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
-        //             echo "Detected branch: ${env.BRANCH}"
-        //         }
-        //     }
-        // }
+        stage('Init envs') {
+            steps {
+                script {
+                    env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
+                    echo "Detected branch: ${env.BRANCH}"
+                }
+            }
+        }
         stage('Packages and Tests') {
             when {
                 expression {
                     def branch = env.BRANCH.replaceFirst('refs/heads/', '')
+                    print(branch)
                     return (env.BRANCH == 'main') && (params.BUILD != 'install') && (params.BUILD != 'delete')
                 }
             }
