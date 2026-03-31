@@ -6,6 +6,7 @@ def packagesStage() {
         dir(serviceDir) {
             if(fileExists(".git")) {
                 echo "✅ Repo exists, pulling latest changes"
+                
                 sh "git reset --hard && git clean -fd"
                 sh "git pull origin main"
             }
@@ -16,25 +17,14 @@ def packagesStage() {
 
             echo "Check and install dependensies"
 
-            sh 'python3 -m venv venv'
-
 
             sh '''
-            . venv/bin/activate
-            pip install --upgrade pip
-            pip install pytest pytest-cov allure-pytest
-            pip install pylint flask sqlalchemy
-            '''
-
-
-            sh '''
-            . venv/bin/activate
-            pylint **/*.py || true
-            '''
-
-            sh '''
-            . venv/bin/activate
-            pytest --alluredir=allure-results
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install pytest pytest-cov allure-pytest pylint flask sqlalchemy
+                pylint **/*.py || true
+                pytest --alluredir=allure-results
             '''
 
             allure([
