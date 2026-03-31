@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     def deployScript = load 'vars/deploy.groovy'
-                    deployScript.deployStage
+                    deployScript.deployStage()
                 }
             }
         }
