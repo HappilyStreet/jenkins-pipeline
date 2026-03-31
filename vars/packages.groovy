@@ -23,14 +23,15 @@ def packagesStage() {
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
-                pip install pylint flask sqlalchemy requests
+                pip install pytest allure-pytest flask sqlalchemy requests
                 pylint **/*.py || true
+                pytest --alluredir=allure-results || true
             '''
 
             allure([
                 includeProperties: false,
                 jdk: '',
-                results: [[path: "${serviceDir}/allure-results"]]
+                results: [[path: 'allure-results']]
             ])
         }
     }
