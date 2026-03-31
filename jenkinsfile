@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                     def testsScript = load 'vars/tests.groovy'
-                    testScript.testStage()
+                    testsScript.testStage()
                 }
             }
         }
