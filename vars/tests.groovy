@@ -1,7 +1,7 @@
 def testStage() {
     echo "🔹 Running tests after deploy"
 
-    dir("${serviceDir}/helm") {
+    dir("${serviceDir}") {
         sh '''
             python3 -m venv venv
             venv/bin/pip install -r requirements.txt
@@ -11,7 +11,7 @@ def testStage() {
         allure([
             includeProperties: false,
             jdk: '',
-            results: [[path: "${serviceDir}/helm/allure-results"]]
+            results: [[path: 'allure-results']]
         ])
     }
 }
