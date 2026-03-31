@@ -3,18 +3,17 @@ pipeline {
     environment {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
+        BRANCH = "${params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main'}".replaceFirst('refs/heads/', '')
     }
     stages {
-        stage('Init envs') {
-            steps {
-                script {
-                env.BRANCH = (env.GIT_BRANCH ?: params.BRANCH_NAME ?: 'main')
-                                    .replaceFirst('^refs/heads/', '')
-                                    .replaceFirst('^origin/', '')
-                    echo "Detected branch: ${env.BRANCH}"
-                }
-            }
-        }
+        // stage('Init envs') {
+        //     steps {
+        //         script {
+        //             env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
+        //             echo "Detected branch: ${env.BRANCH}"
+        //         }
+        //     }
+        // }
         stage('Packages and Tests') {
             when {
                 expression {
