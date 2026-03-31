@@ -1,65 +1,64 @@
-def changeDetected = false
-
 pipeline {
     agent any
     environment {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
         imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
     }
+    triggers {
+        githubPush()
+    }
     stages {
-        stage('Check environment') {
-            steps{
+        stage('Packages and Tests') {
+            when {
+                branch 'main'
+            }
+            steps {
                 script{
-                    def precheckScript = load 'vars/precheck.groovy'
-                    precheckScript.precheckStage()
+                    def packagesScript = load 'vars/packages.groovy'
+                    packagesScript.packagesStage()
                 }
             }
         }
-        stage('Build Stage'){
+        stage('Build and push') {
             when {
-                expression { params.BUILD == 'install' }
+                branch 'main'
             }
-            steps{
-                script{
+            steps {
+                script {
                     def buildScript = load 'vars/build.groovy'
                     buildScript.buildStage()
                 }
             }
         }
-        stage('Push docker image') {
+        stage('Deploy') {
             when {
-                expression { params.BUILD != 'delete' }
-            }
-            steps {
-                script{
-                    def pushScript = load 'vars/push.groovy'
-                    pushScript.pushStage()
+                anyOf {
+                    branch 'main'
+                    expression {params.BUILD == 'install'}
                 }
-            }
-        }
-        stage('Deploy docker via helm') {
-            when {
-                expression { params.BUILD == 'install' }
-            }
-            steps {
-                script{
-                    def deployScript = load 'vars/deploy.groovy'
-                    deployScript.deployStage()
-                }
-            }
-        }
-        stage('Post-Deploy Tests') {
-            when {
-                expression { params.BUILD == 'install' }
             }
             steps {
                 script {
-                    def postTest = load 'vars/check.groovy'
-                    postTest.testStage()
+                    def deployScript = load 'vars/deploy.groovy'
+                    deployScript.deployStage
                 }
             }
         }
-        stage('Delete Service') {
+        stage('Run tests after deploy') {
+            when {
+                anyOf {
+                    branch 'main'
+                    expression {params.BUILD == 'install'}
+                }
+            }
+            steps {
+                script {
+                    def testsScript = load 'var/tests.groovy'
+                    testScript.testStage
+                }
+            }
+        }
+        stage('Delete service') {
             when {
                 expression { params.BUILD == 'delete' }
             }
@@ -73,7 +72,7 @@ pipeline {
         stage('Clean old files') {
             steps {
                 script {
-                    deleteDir ()
+                    cleanWs()
                 }
             }
         }
