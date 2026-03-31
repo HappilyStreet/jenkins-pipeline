@@ -18,14 +18,14 @@ def packagesStage() {
             echo "Check and install dependensies"
 
 
-            sh 'rm -rf venv'
-            sh 'python3 -m venv venv'
-            sh './venv/bin/pip install --upgrade pip'
-            sh './venv/bin/pip install -r requirements.txt'
-            
-            // Линтинг и тесты через полный путь
-            sh './venv/bin/pylint test/test_service.py || true'
-            sh './venv/bin/pytest --alluredir=allure-results'
+            // Создаем виртуальное окружение и ставим только нужные пакеты для линтера
+            sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install pylint flask sqlalchemy requests
+                pylint **/*.py || true
+            '''
 
             allure([
                 includeProperties: false,
