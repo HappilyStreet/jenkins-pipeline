@@ -22,9 +22,13 @@ def packagesStage() {
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
+
                 if [ -f requirements.txt ]; then
                     pip install -r requirements.txt
                 fi
+
+                # Устанавливаем тестовые инструменты
+                pip install pylint pytest allure-pytest
 
                 # Запускаем линтер и тесты
                 venv/bin/pylint test/test_service.py || true
