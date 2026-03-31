@@ -18,20 +18,14 @@ def packagesStage() {
             echo "Check and install dependensies"
 
 
-            // Удаляем старое виртуальное окружение
             sh 'rm -rf venv'
-
-            // Создаем виртуальное окружение и устанавливаем зависимости
-            sh '''
-                python3 -m venv venv
-                source venv/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
-            '''
-
-            // Линтинг и тесты через полные пути venv
-            sh 'venv/bin/pylint test/test_service.py || true'
-            sh 'venv/bin/pytest --alluredir=allure-results'
+            sh 'python3 -m venv venv'
+            sh './venv/bin/pip install --upgrade pip'
+            sh './venv/bin/pip install -r requirements.txt'
+            
+            // Линтинг и тесты через полный путь
+            sh './venv/bin/pylint test/test_service.py || true'
+            sh './venv/bin/pytest --alluredir=allure-results'
 
             allure([
                 includeProperties: false,
