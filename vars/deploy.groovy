@@ -19,7 +19,7 @@ def deployStage(){
             sh "pwd"
             sh "ls -l ./helm"
             echo "Deploying to Kubernetes using Helm..."
-            sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag}"
+            sh "helm upgrade --install mytodo ./helm --set image.tag=${imageTag} --kubeconfig ${env.KUBE_CONFIG_PATH}"
         }
     }
 echo "✅ Deploy Stage completed."
