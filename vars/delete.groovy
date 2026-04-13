@@ -2,8 +2,6 @@ def deleteStage() {
     stage('Delete service') {
         withEnv(["PATH=${env.HOME}/bin:${env.PATH}"]){
             dir(serviceDir){
-                echo "🔹 Export kubeconfig"
-                export KUBE_SECRET = kubeconfig.yaml
                 
                 echo "Uninstall using Helm..."
                 sh "helm uninstall mytodo -n default"
