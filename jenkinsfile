@@ -71,10 +71,11 @@ pipeline {
             steps {
                 withEnv ([
                     "DOCKER_USER=${env.DOCKER_USER}"
-                ])
-                script {
-                    def buildScript = load 'vars/build.groovy'
-                    buildScript.buildStage()
+                ]) {
+                    script {
+                        def buildScript = load 'vars/build.groovy'
+                        buildScript.buildStage()
+                    }
                 }
             }
         }
