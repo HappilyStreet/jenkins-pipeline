@@ -1,12 +1,13 @@
 def pushStage() {
     stage('Push stage') {
          withEnv(["PATH=/usr/local/bin:$PATH"]) {
-            withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
-                dir(serviceDir) {
-                    echo "Pushing Docker image to registry..."
-                    sh "docker tag mytodo-service:${imageTag} mrsunchip/mytodo-service:${imageTag}"
-                    sh "docker push mrsunchip/mytodo-service:${imageTag}"
-                }
+            dir(serviceDir) {
+                echo "Logging in to Docker Registry..."
+                sh "echo ${env.DOCKER_SECRET} | docker login -u ${env.DOCKER_USER} --password-stdin"
+
+                echo "Pushing Docker image to registry..."
+                sh "docker tag mytodo-service:${imageTag} mrsunchip/mytodo-service:${imageTag}"
+                sh "docker push mrsunchip/mytodo-service:${imageTag}"
             }
          }
 

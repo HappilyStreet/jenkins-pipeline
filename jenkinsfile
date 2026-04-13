@@ -2,13 +2,42 @@ pipeline {
     agent any
     environment {
         serviceDir = '../app'  // путь к клонированному репозиторию с микросервисом
-        imageTag = "mytodo-${env.BUILD_NUMBER}"  // общий тег для всех стадий
+        imageTag = "${env.BUILD_NUMBER}"  // общий тег для всех стадий
         BRANCH = "${params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main'}".replaceFirst('refs/heads/', '')
     }
     stages {
         stage('Init envs') {
             steps {
+                withVault(
+                    configuration: [
+                        vaultCredentialId: 'myapprole'
+                    ],
+                    vaultSecrets: [
+                        [
+                            path: 'kv/gitlab',
+                            engineVersion: 2,
+                            secretValues: [
+                                [envVar: 'DOCKER_TOKEN', vaultKey: 'docker_token'],
+                                [envVar: 'DOCKER_USER', vaultKey: 'docker_user'],
+                                [envVar: 'KUBECONFIG', vaultKey: 'kube_config']
+                            ]
+                        ]
+                    ]
+                )
                 script {
+                    String dockerToken = env.DOCKER_TOKEN
+                    byte[] decodedToken = java.util.Base64.getDecoder().decode(dockerToken)
+                    String decoded_token = new String(decodedToken, 'UTF-8')
+                    env.DOCKER_SECRET = decoded_token
+
+                    String kubeСonfig = env.KUBECONFIG
+                    byte[] decodedConfig = java.util.Base64.getDecoder().decode(kubeСonfig)
+                    writeFile: 'kubeconfig.yaml', text: decodedConfig
+                    env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
+                    
+                    // String decoded_config = new String(decodedConfig, 'UTF-8')
+                    // env.KUBE_SECRET = decoded_config
+
                     env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
                     echo "Detected branch: ${env.BRANCH}"
                 }
@@ -77,12 +106,15 @@ pipeline {
                 }
             }
         }
-        stage('Clean old files') {
+        stage('Cleanup') {
             steps {
-                script {
-                    cleanWs()
-                }
+                sh 'rm -f kubeconfig.yaml'
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
