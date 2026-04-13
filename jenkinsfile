@@ -32,7 +32,7 @@ pipeline {
 
                     String kubeСonfig = env.KUBECONFIG
                     byte[] decodedConfig = java.util.Base64.getDecoder().decode(kubeСonfig)
-                    writeFile: 'kubeconfig.yaml', text: decodedConfig
+                    writeFile file: 'kubeconfig.yaml', text: decodedConfig
                     env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
                     
                     // String decoded_config = new String(decodedConfig, 'UTF-8')
