@@ -4,10 +4,10 @@ def deleteStage() {
             dir(serviceDir){
                 
                 echo "Uninstall using Helm..."
-                sh "helm uninstall mytodo -n default"
+                sh "helm uninstall mytodo -n default --kubeconfig{$env.KUBE_CONFIG_PATH}"
             }
             def deleteResult = sh(
-                script: "kubectl get deploy",
+                script: "kubectl get deploy --kubeconfig{$env.KUBE_CONFIG_PATH}",
                 returnStdout: true
             ).trim()
             if(deleteResult.contains("mytodoservice-deployment")){
