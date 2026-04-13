@@ -23,20 +23,23 @@ pipeline {
                             ]
                         ]
                     ]
+                    script{
+                        String dockerToken = env.DOCKER_TOKEN
+                        byte[] decodedToken = java.util.Base64.getDecoder().decode(dockerToken)
+                        String decoded_token = new String(decodedToken, 'UTF-8')
+                        env.DOCKER_SECRET = decoded_token
+
+                        String kubeСonfig = env.KUBECONFIG
+                        byte[] decodedConfig = java.util.Base64.getDecoder().decode(kubeСonfig)
+                        writeFile file: 'kubeconfig.yaml', text: decodedConfig
+                        env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
+                        
+                        // String decoded_config = new String(decodedConfig, 'UTF-8')
+                        // env.KUBE_SECRET = decoded_config
+                    }
+
                 )
                 script {
-                    String dockerToken = env.DOCKER_TOKEN
-                    byte[] decodedToken = java.util.Base64.getDecoder().decode(dockerToken)
-                    String decoded_token = new String(decodedToken, 'UTF-8')
-                    env.DOCKER_SECRET = decoded_token
-
-                    String kubeСonfig = env.KUBECONFIG
-                    byte[] decodedConfig = java.util.Base64.getDecoder().decode(kubeСonfig)
-                    writeFile file: 'kubeconfig.yaml', text: decodedConfig
-                    env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
-                    
-                    // String decoded_config = new String(decodedConfig, 'UTF-8')
-                    // env.KUBE_SECRET = decoded_config
 
                     env.BRANCH = (params.BRANCH_NAME ?: env.BRANCH_NAME ?: 'main').replaceFirst('refs/heads/', '')
                     echo "Detected branch: ${env.BRANCH}"
