@@ -37,6 +37,7 @@ pipeline {
                         writeFile file: 'kubeconfig.yaml', text: decoded_config
                         env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
                     
+                        echo "✅ Docker user: ${env.DOCKER_USER}"
                         // env.KUBE_SECRET = decoded_config
                     }
                 }
