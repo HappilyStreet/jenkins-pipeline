@@ -3,8 +3,8 @@ def buildStage() {
         withEnv(["PATH=/usr/local/bin:$PATH"]) {
             echo "Logging in to Docker Registry..."
             echo "${env.DOCKER_SECRET} "
-            echo "${env.DOCKER_USER}"
-            sh "echo ${env.DOCKER_SECRET} | docker login -u ${env.DOCKER_USER} --password-stdin"
+            echo "${env.USER_DOCKER}"
+            sh "echo ${env.DOCKER_SECRET} | docker login -u ${env.USER_DOCKER} --password-stdin"
 
             echo "Building Docker image with tag: mytodo-service:${imageTag}"
             sh "docker build -t mytodo-service:${imageTag} ${serviceDir}"   

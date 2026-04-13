@@ -18,7 +18,7 @@ pipeline {
                             engineVersion: 2,
                             secretValues: [
                                 [envVar: 'DOCKER_TOKEN', vaultKey: 'docker_token'],
-                                [envVar: 'DOCKER_USER', vaultKey: 'docker_user'],
+                                [envVar: 'USER_DOCKER', vaultKey: 'docker_user'],
                                 [envVar: 'KUBECONFIG', vaultKey: 'kube_config']
                             ]
                         ]
@@ -37,8 +37,8 @@ pipeline {
                         writeFile file: 'kubeconfig.yaml', text: decoded_config
                         env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
                     
-                        echo "DOCKER_USER length: ${env.DOCKER_USER?.length() ?: 0}"
-                        echo "✅ Docker user: ${env.DOCKER_USER}"
+                        echo "USER_DOCKER length: ${env.USER_DOCKER?.length() ?: 0}"
+                        echo "✅ Docker user: ${env.USER_DOCKER}"
                         // env.KUBE_SECRET = decoded_config
                     }
                 }

@@ -3,7 +3,7 @@ def pushStage() {
          withEnv(["PATH=/usr/local/bin:$PATH"]) {
             dir(serviceDir) {
                 echo "Logging in to Docker Registry..."
-                sh "echo ${env.DOCKER_SECRET} | docker login -u ${env.DOCKER_USER} --password-stdin"
+                sh "echo ${env.DOCKER_SECRET} | docker login -u ${env.USER_DOCKER} --password-stdin"
 
                 echo "Pushing Docker image to registry..."
                 sh "docker tag mytodo-service:${imageTag} mrsunchip/mytodo-service:${imageTag}"
