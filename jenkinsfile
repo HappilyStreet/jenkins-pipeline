@@ -36,7 +36,9 @@ pipeline {
                         String decoded_config = new String(decodedConfig, 'UTF-8')
                         writeFile file: 'kubeconfig.yaml', text: decoded_config
                         env.KUBE_CONFIG_PATH = pwd() + '/kubeconfig.yaml'
-                    
+
+                        env.USER_DOCKER = env.DOCKER_USER
+                        print(USER_DOCKER)
                         echo "DOCKER_USER length: ${env.DOCKER_USER?.length() ?: 0}"
                         echo "✅ Docker user: ${env.DOCKER_USER}"
                         // env.KUBE_SECRET = decoded_config
@@ -71,11 +73,10 @@ pipeline {
             steps {
                 withEnv ([
                     "DOCKER_USER=${env.DOCKER_USER}"
-                ]) {
-                    script {
-                        def buildScript = load 'vars/build.groovy'
-                        buildScript.buildStage()
-                    }
+                ])
+                script {
+                    def buildScript = load 'vars/build.groovy'
+                    buildScript.buildStage()
                 }
             }
         }
